@@ -1,0 +1,14 @@
+
+.DS_Store
+
+*.jar
+
+*.properties
+
+gradlew
+
+gradlew.bat
+
+HELP.md
+
+*.gradle
