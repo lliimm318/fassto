@@ -14,6 +14,6 @@ public interface SubcategoryRepository extends JpaRepository<Subcategory, String
 
     List<Subcategory> findByCategoryOrderBySortDesc(Category category);
 
-    Optional<Subcategory> findByFullCode(String fullCode);
+    Optional<Subcategory> findByCategoryAndCode(Category category, String code);
 
 }
