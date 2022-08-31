@@ -1,7 +1,6 @@
 package com.fassto.test.controller;
 
 import com.fassto.test.payload.request.SubcategoryRequest;
-import com.fassto.test.payload.response.CategoryResponse;
 import com.fassto.test.payload.response.SubcategoryResponse;
 import com.fassto.test.service.SubcategoryService;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +32,16 @@ public class SubcategoryController {
     }
 
     @DeleteMapping("/{category}/{subcategory}")
-    public void deleteSubcategory(@PathVariable String categoryCode,
-                           @PathVariable String subcategoryCode) {
-        subcategoryService.deleteSubcategory(categoryCode, subcategoryCode);
+    public void deleteSubcategory(@PathVariable String category,
+                           @PathVariable String subcategory) {
+        subcategoryService.deleteSubcategory(category, subcategory);
     }
 
-    @PutMapping()
-    public void updateCategory(@PathVariable String categoryCode,
-                               @PathVariable String subcategoryCode,
+    @PutMapping("/{category}/{subcategory}")
+    public void updateCategory(@PathVariable String category,
+                               @PathVariable String subcategory,
                                @RequestBody SubcategoryRequest subcategoryRequest) {
-        subcategoryService.updateCategory(categoryCode, subcategoryCode, subcategoryRequest);
+        subcategoryService.updateCategory(category, subcategory, subcategoryRequest);
     }
 
 }
