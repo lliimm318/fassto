@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class SearchRequest {
+public class CodeRequest {
 
-    private final String word;
+    private final String Code;
 
 }
