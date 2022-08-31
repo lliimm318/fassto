@@ -8,8 +8,8 @@ import com.fassto.test.payload.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,23 +20,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryResponse> getCategories() {
 
-        List<Category> categories = categoryRepository.findAllByOrderByCode();
-        List<CategoryResponse> responses = new ArrayList<>();
-
-        Integer count = 1;
-
-        for(Category c : categories) {
-            CategoryResponse categoryResponse = CategoryResponse.builder()
-                    .code(c.getCode())
-                    .name(c.getName())
-                    .isUsed(c.getIsUsed())
-                    .number(count)
-                    .build();
-            count++;
-
-            responses.add(categoryResponse);
-        }
-        return responses;
+        return categoryRepository.findAllByOrderByCode().stream()
+                .map(category -> CategoryResponse.builder()
+                        .name(category.getName())
+                        .code(category.getCode())
+                        .isUsed(category.getIsUsed())
+                        .build())
+                .collect(Collectors.toList());
 
     }
 
@@ -66,7 +56,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryResponse> searchResponse(String word) {
 
-        return null;
+        return categoryRepository.findByCodeOrName(word).stream()
+                .map(category -> CategoryResponse.builder()
+                        .name(category.getName())
+                        .code(category.getCode())
+                        .isUsed(category.getIsUsed())
+                        .build())
+                .collect(Collectors.toList());
 
     }
 
