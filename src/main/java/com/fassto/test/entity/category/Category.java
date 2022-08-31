@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Builder
-@Entity(name = "master")
+@Entity(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
@@ -25,8 +25,5 @@ public class Category {
 
     @Column(name = "is_used")
     private Boolean isUsed;
-
-    @OneToMany(mappedBy = "code")
-    private List<Subcategory> subcategories;
 
 }
