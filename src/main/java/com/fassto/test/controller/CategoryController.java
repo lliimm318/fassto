@@ -1,7 +1,6 @@
 package com.fassto.test.controller;
 
 import com.fassto.test.payload.request.CategoryRequest;
-import com.fassto.test.payload.request.CodeRequest;
 import com.fassto.test.payload.response.CategoryResponse;
 import com.fassto.test.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +26,13 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryCode}")
-    public void deleteCategory(@PathVariable String code) {
-        categoryService.deleteCategory(code);
+    public void deleteCategory(@PathVariable String categoryCode) {
+        categoryService.deleteCategory(categoryCode);
+    }
+
+    @GetMapping("/search")
+    public List<CategoryResponse> getSearchList(@RequestParam("search") String word) {
+        return categoryService.searchResponse(word);
     }
 
 
