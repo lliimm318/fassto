@@ -13,6 +13,8 @@ public class SubcategoryResponse {
 
     private final String name;
 
+    private final Integer sort;
+
     private final Boolean isUsed;
 
 }
