@@ -12,3 +12,17 @@ gradlew.bat
 HELP.md
 
 *.gradle
+
+*.class
+
+*.html
+
+*.css
+
+*.bin
+
+*.idx
+
+*.xml
+
+*.js
