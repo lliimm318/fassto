@@ -11,8 +11,6 @@ public class SubcategoryResponse {
 
     private final Integer id;
 
-    private final Integer number;
-
     private final String code;
 
     private final String name;
