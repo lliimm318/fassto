@@ -16,8 +16,9 @@ import javax.persistence.*;
 public class Subcategory {
 
     @Id
-    @Column(name = "full_code")
-    private String fullCode;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "code")
     private String code;
@@ -32,11 +33,10 @@ public class Subcategory {
     private Boolean isUsed;
 
     @ManyToOne
-    @JoinColumn(name = "category_code")
+    @JoinColumn(name = "category_code",  referencedColumnName = "code")
     private Category category;
 
-    public Subcategory updateSubcategory(String categoryCode, String code, String name, Integer sort, Boolean isUsed) {
-        fullCode = categoryCode+code;
+    public Subcategory updateSubcategory(String code, String name, Integer sort, Boolean isUsed) {
         this.code = code;
         this.name = name;
         this.sort = sort;
