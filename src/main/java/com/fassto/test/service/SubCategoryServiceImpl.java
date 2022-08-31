@@ -5,14 +5,13 @@ import com.fassto.test.entity.category.CategoryRepository;
 import com.fassto.test.entity.subcategory.Subcategory;
 import com.fassto.test.entity.subcategory.SubcategoryRepository;
 import com.fassto.test.exception.exceptions.CategoryNotFound;
-import com.fassto.test.exception.exceptions.SubcategoryNotFound;
 import com.fassto.test.payload.request.SubcategoryRequest;
 import com.fassto.test.payload.response.SubcategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,63 +23,43 @@ public class SubCategoryServiceImpl implements SubcategoryService {
     @Override
     public List<SubcategoryResponse> getSubcategories(String code) {
 
-        Category category = categoryRepository.findByCode(code)
-                .orElseThrow(CategoryNotFound::new);
+        Category category = findCategory(code);
 
-        List<Subcategory> subcategories = subcategoryRepository.findByCategoryOrderBySort(category);
-        List<SubcategoryResponse> subcategoryResponses = new ArrayList<>();
+        return subcategoryRepository.findByCategoryOrderBySort(category).stream()
+                .map(subcategory -> SubcategoryResponse.builder()
+                        .id(subcategory.getId())
+                        .code(subcategory.getCode())
+                        .name(subcategory.getName())
+                        .sort(subcategory.getSort())
+                        .isUsed(subcategory.getIsUsed())
+                        .build())
+                .collect(Collectors.toList());
 
-        Integer count = 1;
-        for (Subcategory s : subcategories) {
-            SubcategoryResponse subcategoryResponse = SubcategoryResponse.builder()
-                            .number(count)
-                            .code(s.getCode())
-                            .name(s.getName())
-                            .sort(s.getSort())
-                            .isUsed(s.getIsUsed())
-                    .build();
-            count++;
-
-            subcategoryResponses.add(subcategoryResponse);
-        }
-
-        return subcategoryResponses;
     }
 
     @Override
     public List<SubcategoryResponse> getSubcategoriesDesc(String code) {
 
-        Category category = categoryRepository.findByCode(code)
-                .orElseThrow(CategoryNotFound::new);
+        Category category = findCategory(code);
 
-        List<Subcategory> subcategories = subcategoryRepository.findByCategoryOrderBySortDesc(category);
-        List<SubcategoryResponse> subcategoryResponses = new ArrayList<>();
+        return subcategoryRepository.findByCategoryOrderBySortDesc(category).stream()
+                .map(subcategory -> SubcategoryResponse.builder()
+                        .id(subcategory.getId())
+                        .code(subcategory.getCode())
+                        .name(subcategory.getName())
+                        .sort(subcategory.getSort())
+                        .isUsed(subcategory.getIsUsed())
+                        .build())
+                .collect(Collectors.toList());
 
-        Integer count = 1;
-        for (Subcategory s : subcategories) {
-            SubcategoryResponse subcategoryResponse = SubcategoryResponse.builder()
-                    .number(count)
-                    .code(s.getCode())
-                    .name(s.getName())
-                    .sort(s.getSort())
-                    .isUsed(s.getIsUsed())
-                    .build();
-            count++;
-
-            subcategoryResponses.add(subcategoryResponse);
-        }
-
-        return subcategoryResponses;
     }
 
     @Override
     public void createSubcategory(String code, SubcategoryRequest subcategoryRequest) {
 
-        Category category = categoryRepository.findByCode(code)
-                .orElseThrow(CategoryNotFound::new);
+        Category category = findCategory(code);
 
         Subcategory subcategory = Subcategory.builder()
-                        .fullCode(code+subcategoryRequest.getCode())
                         .code(subcategoryRequest.getCode())
                         .name(subcategoryRequest.getName())
                         .sort(subcategoryRequest.getSort())
@@ -95,11 +74,8 @@ public class SubCategoryServiceImpl implements SubcategoryService {
     @Override
     public void deleteSubcategory(String categoryCode, String subcategoryCode) {
 
-        Category category = categoryRepository.findByCode(categoryCode)
-                .orElseThrow(CategoryNotFound::new);
-
-        Subcategory subcategory = subcategoryRepository.findByFullCode(categoryCode+subcategoryCode)
-                .orElseThrow(SubcategoryNotFound::new);
+        Category category = findCategory(categoryCode);
+        Subcategory subcategory = findSubcategory(category, subcategoryCode);
 
         subcategoryRepository.delete(subcategory);
 
@@ -108,15 +84,26 @@ public class SubCategoryServiceImpl implements SubcategoryService {
     @Override
     public void updateCategory(String categoryCode, String subcategoryCode, SubcategoryRequest subcategoryRequest) {
 
-        Category category = categoryRepository.findByCode(categoryCode)
-                .orElseThrow(CategoryNotFound::new);
+        Category category = findCategory(categoryCode);
+        Subcategory subcategory = findSubcategory(category, subcategoryCode);
 
-        Subcategory subcategory = subcategoryRepository.findByFullCode(categoryCode+subcategoryCode)
-                .orElseThrow(SubcategoryNotFound::new);
-
-        subcategory.updateSubcategory(categoryCode, subcategoryRequest.getCode(), subcategoryRequest.getName(), subcategoryRequest.getSort(), subcategoryRequest.getIsUsed());
+        subcategory.updateSubcategory(subcategoryRequest.getCode(), subcategoryRequest.getName(), subcategoryRequest.getSort(), subcategoryRequest.getIsUsed());
 
         subcategoryRepository.save(subcategory);
+
+    }
+
+    private Category findCategory(String categoryCode) {
+
+        return categoryRepository.findByCode(categoryCode)
+                .orElseThrow(CategoryNotFound::new);
+
+    }
+
+    private Subcategory findSubcategory(Category category, String subcategoryCode) {
+
+        return subcategoryRepository.findByCategoryAndCode(category, subcategoryCode)
+                .orElseThrow(CategoryNotFound::new);
 
     }
 
