@@ -7,6 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubcategoryRequest {
 
-    private final String categoryCode;
+    private final String code;
+
+    private final String name;
+
+    private final Integer sort;
+
+    private final Boolean isUsed;
 
 }
