@@ -20,14 +20,8 @@ public class Category {
     @Column(name = "code", nullable = false, unique = true, length = 6)
     private String code;
 
-    @Column(name = "number")
-    private Integer number;
-
     @Column(name = "name")
     private String name;
-
-    @Column(name = "sort")
-    private Integer sort;
 
     @Column(name = "is_used")
     private Boolean isUsed;
