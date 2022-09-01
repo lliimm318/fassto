@@ -11,6 +11,8 @@ public class CategoryRequest {
 
     private final String name;
 
+    private final Integer sort;
+
     private final Boolean isUsed;
 
 }
