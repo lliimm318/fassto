@@ -16,24 +16,30 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/list")
-    public List<CategoryResponse> categoryList() {
-        return categoryService.getCategories();
+    public List<CategoryResponse> categoryList(@RequestParam(value = "parentsCode", required=false) String parentsCode) {
+        return categoryService.getCategories(parentsCode);
     }
 
     @PostMapping
-    public void createCategory(@RequestBody CategoryRequest categoryRequest) {
-        categoryService.createCategory(categoryRequest);
+    public void createCategory(@RequestParam(value = "parentsCode", required=false) String parentsCode,
+                                @RequestBody CategoryRequest categoryRequest) {
+        categoryService.createCategory(parentsCode, categoryRequest);
     }
 
-    @DeleteMapping("/{categoryCode}")
-    public void deleteCategory(@PathVariable String categoryCode) {
-        categoryService.deleteCategory(categoryCode);
+    @DeleteMapping("/{categoryId}")
+    public void deleteCategory(@PathVariable Integer categoryId) {
+        categoryService.deleteCategory(categoryId);
+    }
+
+    @PutMapping("/{categoryId}")
+    public void updateCategory(@PathVariable Integer categoryId,
+                               @RequestBody CategoryRequest categoryRequest) {
+        categoryService.updateCategory(categoryId, categoryRequest);
     }
 
     @GetMapping("/search")
-    public List<CategoryResponse> getSearchList(@RequestParam("search") String word) {
+    public List<CategoryResponse> getSearchList(@RequestParam(value = "search") String word) {
         return categoryService.searchResponse(word);
     }
-
 
 }
