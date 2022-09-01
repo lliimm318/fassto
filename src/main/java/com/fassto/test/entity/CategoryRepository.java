@@ -1,4 +1,4 @@
-package com.fassto.test.entity.category;
+package com.fassto.test.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,19 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, String> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-    List<Category> findAllByOrderByCode();
+    List<Category> findByParentsCodeOrderBySort(String parentCode);
 
-    Optional<Category> findByCode(String code);
-
+    Optional<Category> findById(Integer id);
 
     @Query(value = "select c from category c where (c.code like %:word%) or (c.name like %:word%)")
     List<Category> findByCodeOrName(@Param("word") String word);
-
-
-    List<Category> findByCodeContains(String code);
-
-    List<Category> findByNameContains(String name);
 
 }
