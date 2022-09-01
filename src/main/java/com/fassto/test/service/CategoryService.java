@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<CategoryResponse> getCategories();
+    List<CategoryResponse> getCategories(String parentCode);
 
-    void createCategory(CategoryRequest categoryRequest);
+    void createCategory(String parentCode, CategoryRequest categoryRequest);
 
-    void deleteCategory(String code);
+    void deleteCategory(Integer categoryId);
+
+    void updateCategory(Integer categoryId, CategoryRequest categoryRequest);
 
     List<CategoryResponse> searchResponse(String word);
 
