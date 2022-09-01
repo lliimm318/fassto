@@ -9,9 +9,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CategoryResponse {
 
+    private final Integer id;
+
     private final String code;
 
     private final String name;
+
+    private final Integer sort;
 
     private final Boolean isUsed;
 
