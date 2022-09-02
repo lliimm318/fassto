@@ -15,7 +15,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<CategoryResponse> categoryList(@RequestParam(value = "parentsCode", required=false) String parentsCode) {
         return categoryService.getCategories(parentsCode);
     }
